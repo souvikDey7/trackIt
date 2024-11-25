@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-around;
+  align-content: center;
+  gap: 1rem;
+}
+
+.button
+{
+  flex-wrap: wrap;
+  align-content:  center;
+}
+
+.header
+{
+  /*display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-around;
+ 
+  flex-wrap: wrap;*/
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr ;
+  margin-left: 1rem;
+}
+
+
+input:focus {
+  outline:none !important;
+/*  outline: 1px solid rgb(122, 41, 252); */
+}
