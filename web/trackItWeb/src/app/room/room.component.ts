@@ -41,7 +41,7 @@ export class RoomComponent implements OnInit {
   showTable: boolean = false;
   async joinRoom() {
     console.log("working", this.showTable);
-    await this.delay(3000);
+    //await this.delay(3000);
     this.showTable = !this.showTable;
   }
 }
