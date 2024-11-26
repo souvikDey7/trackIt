@@ -1,27 +1,64 @@
-<div class="header">
-    <div>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
-            viewBox="0 0 16 16" style="font-size: 2rem;align-self: flex-start;">
-            <path fill-rule="evenodd"
-                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
-        </svg>
+<div [hidden]="showTable">
+    <div class="header">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
+                viewBox="0 0 16 16" style="font-size: 2rem;align-self: flex-start;">
+                <path fill-rule="evenodd"
+                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+            </svg>
+        </div>
+        <div class="display-4" style="grid-area: 1/2 /1 /5; font-size: 1.5rem; align-self: start;"> Join Room</div>
     </div>
-    <div class="display-4" style="grid-area: 1/2 /1 /5; font-size: 1.5rem; align-self: start;"> Join Room</div>
-</div>
-<br>
-<form class="container">
-    <div class="form-floating" style="width:100%;">
-        <input type="email" class="form-control"  placeholder="">
-        <label for="floatingInput" style="color:rgb(122, 41, 252);">Room Id</label>
-    </div>
-    <div class="form-floating" style="width:100%;">
-        <input type="password" class="form-control" placeholder="">
-        <label for="floatingPassword" style="color:rgb(122, 41, 252);">Room Passcode</label>
+    <br>
+    <form class="container">
+        <div class="form-floating" style="width:100%;">
+            <input type="email" class="form-control" placeholder="">
+            <label class="placeholder" for="floatingInput" style="color:rgb(122, 41, 252);">Room Id</label>
+        </div>
+        <div class="form-floating" style="width:100%;">
+            <input type="password" class="form-control" placeholder="">
+            <label class="placeholder" for="floatingPassword" style="color:rgb(122, 41, 252);">Room Passcode</label>
 
+        </div>
+        <div class="button" style="width:100%; width:100%; border: 0px;">
+            <button (click)="joinRoom()" type="button" class="rounded shadow border-light"
+                style="width:100%; border: 0px; height: 30px; color:rgb(122, 41, 252);">Join
+                Room</button>
+        </div>
+    </form>
+    <div class="load">
+        <p style="grid-area: 2/2 /2 /2; font-size: 1rem; align-self: start;"> You have not joined any room yet. </p>
     </div>
-    <div class="button" style="width:100%; width:100%; border: 0px;">
-        <button (click)="click()" type="button" class="rounded shadow border-light"
-            style="width:100%; border: 0px; height: 30px; color:rgb(122, 41, 252);">Join
-            Room</button>
+</div>
+<div [hidden]="!showTable">
+    <div class="header">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
+                viewBox="0 0 16 16" style="font-size: 2rem;align-self: flex-start;" (click)="joinRoom()" >
+                <path fill-rule="evenodd"
+                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+            </svg>
+        </div>
+        <div class="display-4" style="grid-area: 1/2 /1 /6; font-size: 1.5rem; align-self: start;"> Welcome to the room
+        </div>
     </div>
-</form>
+    <br>
+    <div style="margin: 2%;">
+    <table class="table-responsive table rounded-top" style="width: 100%;">
+        <thead >
+            <tr>
+                <th class="dataheader table-bordered" scope="col"> Member</th>
+                <th class="dataheader" scope="col">Distance(in km)</th>
+                <th class="dataheader" scope="col">Trace on map</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let buffer of bufferdata; let i=index" scope="row">
+                <td><label>{{buffer.userId}}</label></td>
+                <td><label>{{buffer.Distance}}</label></td>
+                <td><label style="color: red; font-size: 1rem"><i class="bi bi-geo-alt"></i></label></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</div>
