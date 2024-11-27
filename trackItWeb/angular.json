@@ -31,10 +31,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [
-              "set NODE_OPTIONS=--openssl-legacy-provider  && gulp buildDev && ng serve ",
-              "set NODE_OPTIONS=--openssl-legacy-provider  && gulp build && ng build --prod"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
