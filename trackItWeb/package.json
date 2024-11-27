@@ -3,11 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "set NODE_OPTIONS=--openssl-legacy-provider && gulp buildDev && ng serve",
-    "build": "set NODE_OPTIONS=--openssl-legacy-provider && npx gulp build && ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "scripts": {
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && ng build --prod",
+    "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve"
+}
+
   },
   "private": true,
   "dependencies": {
