@@ -6,11 +6,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "scripts": {
     "build": "set NODE_OPTIONS=--openssl-legacy-provider && ng build --prod",
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve"
-}
-
   },
   "private": true,
   "dependencies": {
