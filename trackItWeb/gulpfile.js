@@ -1,10 +1,16 @@
 const gulp = require('gulp');
 
-// Define a task for copying assets
+// Example: Copy assets
 gulp.task('copy-assets', function () {
-  return gulp.src('src/assets/**/*') // Source files
-    .pipe(gulp.dest('dist/assets')); // Destination folder
+  return gulp.src('src/assets/**/*')
+    .pipe(gulp.dest('dist/assets'));
 });
 
-// Default task (replace 'copy-assets' with your actual tasks)
-gulp.task('default', gulp.series('copy-assets'));
+// Example: Process styles (optional)
+gulp.task('process-styles', function () {
+  return gulp.src('src/styles/**/*.css')
+    .pipe(gulp.dest('dist/styles'));
+});
+
+// Define the `build` task
+gulp.task('build', gulp.series('copy-assets', 'process-styles'));
