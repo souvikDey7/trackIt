@@ -1,4 +1,6 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-room',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoomComponent implements OnInit {
 
-  constructor() { }
+  currentRoute: any;
+  createRoom: boolean = false;
+  showTable: boolean = false;
+  constructor(private route: ActivatedRoute,private router: Router) { }
 
   ngOnInit(): void {
+    this.route.url.subscribe(data =>
+      this.currentRoute = data[0].path
+    );
+    if (this.currentRoute === 'createroom')
+      this.createRoom = true;
+    else
+      this.createRoom = false;
+    console.log(this.currentRoute," ",this.createRoom);
   }
 
   bufferdata: any = [{
@@ -38,10 +51,13 @@ export class RoomComponent implements OnInit {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  showTable: boolean = false;
   async joinRoom() {
     console.log("working", this.showTable);
     //await this.delay(3000);
     this.showTable = !this.showTable;
+  }
+
+  goBack(): void {
+    this.router.navigate(['back']); 
   }
 }
