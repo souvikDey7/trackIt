@@ -1,5 +1,9 @@
-<section>
-    <div class="room-wrapper" [hidden]="flag">
+<router-outlet [hidden]="flag==false"></router-outlet>
+<section  [hidden]="flag">
+    <div class="blockquote-footer" style=" grid-area: 2/2/2/5; font-size: 1rem; align-self: center;">
+        Discover how far your friends are
+    </div>
+    <div style="grid-area: 3/2/3/4; margin-left: 15%;" class="room-wrapper">
         <div style="width: 100%">
             <i class="bi bi-plus" style="font-size: 2rem;align-self: flex-start;" (click)="createRoom()"></i>
             <a type="button" (click)="hide()" class="btn btn-outline-success rounded shadow"
@@ -14,5 +18,4 @@
                 (click)="joinRoom()"></i>
         </div>
     </div>
-    <router-outlet [hidden]="flag==false"></router-outlet>
 </section>
