@@ -2,13 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, catchError } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
+import { WebSocketService } from './app.socket.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class RoomService {
 
-    constructor(private https: HttpClient) { }
+    constructor(private https: HttpClient,private webSocketService: WebSocketService) { }
 
     url = "https://trackit-lkhm.onrender.com";
     createRoom(roomId: string, password: string) {
@@ -56,4 +57,10 @@ export class RoomService {
             })
         );
     }
+
+    sendLocation()
+    {
+        this.webSocketService.connect('wss://trackit-lkhm.onrender.com/locationupdates');
+    }
+
 }

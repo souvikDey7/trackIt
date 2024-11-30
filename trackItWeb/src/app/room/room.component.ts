@@ -17,6 +17,7 @@ export class RoomComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private service: RoomService) { }
 
   ngOnInit(): void {
+    this.loading = false;
     this.route.url.subscribe(data =>
       this.currentRoute = data[0].path
     );
@@ -53,12 +54,6 @@ export class RoomComponent implements OnInit {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async joinRoom() {
-    console.log("working", this.showTable);
-    //await this.delay(3000);
-    this.showTable = !this.showTable;
-  }
-
   msg: any;
   createNewRoom(data: any) {
     if (data.roomId === '' || data.roomId == null) {
@@ -68,10 +63,13 @@ export class RoomComponent implements OnInit {
       this.msg = "Required field"
     }
     else {
+      this.showLoading();
       this.service.createRoom(data.roomId, data.password).subscribe
         (data => {
+          this.hideLoading();
           if (data == "201") {
             this.showTable = !this.showTable;
+            this.service.sendLocation();
           }
           else if (data == "409") {
             this.msg = "Room id is not available"
@@ -100,10 +98,13 @@ export class RoomComponent implements OnInit {
       this.msg = "Required field"
     }
     else {
+      this.showLoading();
       this.service.joinRoom(data.roomId, data.password, this.userId).subscribe
         (data => {
+          this.hideLoading();
           if (data == "202") {
             this.showTable = !this.showTable;
+            this.service.sendLocation();
           }
           else if (data == "204") {
             this.msg = "Room id is not available"
@@ -124,5 +125,16 @@ export class RoomComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['back']);
+  }
+
+  loading: boolean = false;
+  async showLoading() {
+    this.loading = true;
+    await this.delay(3000);
+    this.hideLoading;
+  }
+
+  hideLoading() {
+    this.loading = false;
   }
 }

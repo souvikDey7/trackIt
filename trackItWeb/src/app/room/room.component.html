@@ -1,3 +1,9 @@
+<div [hidden]="!loading" id="loadingScreen" class="loading-overlay">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+  </div>
 <section>
     <!--Join room section-->
     <div [hidden]="showTable==true || createRoom==true">
