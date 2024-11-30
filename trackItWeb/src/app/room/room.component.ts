@@ -58,13 +58,70 @@ export class RoomComponent implements OnInit {
     //await this.delay(3000);
     this.showTable = !this.showTable;
   }
- 
-  createNewRoom(data:any) {
-    this.service.createRoom(data.roomId, data.password).subscribe
-      (data =>
-        console.log(data))
+
+  msg: any;
+  createNewRoom(data: any) {
+    if (data.roomId === '' || data.roomId == null) {
+      this.msg = "Required field"
+    }
+    else if (data.password === '' || data.password == null) {
+      this.msg = "Required field"
+    }
+    else {
+      this.service.createRoom(data.roomId, data.password).subscribe
+        (data => {
+          if (data == "201") {
+            this.showTable = !this.showTable;
+          }
+          else if (data == "409") {
+            this.msg = "Room id is not available"
+          }
+          else if (data == "500") {
+            this.msg = "Facing some internal issue"
+          }
+          else if (data == "400") {
+            this.msg = "room id or password must not be blank"
+          }
+          else {
+            this.msg = "Unforeseen circumstances"
+          }
+        }
+        );
+    }
   }
-  
+
+  userId: any = "Test";
+
+  joinNewRoom(data: any) {
+    if (data.roomId === '' || data.roomId == null) {
+      this.msg = "Required field"
+    }
+    else if (data.password === '' || data.password == null) {
+      this.msg = "Required field"
+    }
+    else {
+      this.service.joinRoom(data.roomId, data.password, this.userId).subscribe
+        (data => {
+          if (data == "202") {
+            this.showTable = !this.showTable;
+          }
+          else if (data == "204") {
+            this.msg = "Room id is not available"
+          }
+          else if (data == "500") {
+            this.msg = "Facing some internal issue"
+          }
+          else if (data == "401") {
+            this.msg = "Credentials is wrong"
+          }
+          else {
+            this.msg = "Unforeseen circumstances"
+          }
+        }
+        );
+    }
+  }
+
   goBack(): void {
     this.router.navigate(['back']);
   }

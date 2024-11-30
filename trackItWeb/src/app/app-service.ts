@@ -1,5 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map, catchError } from 'rxjs/operators';
+import { of, Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -21,9 +23,37 @@ export class RoomService {
             'password': password
         }
         return this.https.post(finalUrl, credential, {
-            'headers': header
-            , responseType: 'text' as 'json'
-        });
+            headers: header,
+            responseType: 'text' as 'json',
+            observe: 'response'
+        }).pipe(
+            map((response) => response.status),
+            catchError((error) => {
+                return of(error.status); // Return the error's status code
+            })
+        );
+    }
+
+    joinRoom(roomId: string, password: string, userId: string) {
+        let finalUrl = this.url + "/joinRoom?userId=" + userId;
+        let header = new HttpHeaders();
+        header = header.set('Content-Type', 'application/json; charset=UTF-8 ')
+        header = header.set('Access-Control-Allow-Origin', '*');
+        header = header.set('Access-Control-Allow-Methods', 'POST,OPTIONS');
+        header = header.set('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin, Content-Type, Accept, Accept-Language, Origin, User-Agent');
+        let credential = {
+            "roomId": roomId,
+            'password': password
+        }
+        return this.https.post(finalUrl, credential, {
+            headers: header,
+            responseType: 'text' as 'json',
+            observe: 'response'
+        }).pipe(
+            map((response) => response.status),
+            catchError((error) => {
+                return of(error.status); // Return the error's status code
+            })
+        );
     }
 }
-
