@@ -1,6 +1,8 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RoomService } from '../app-service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-room',
@@ -12,7 +14,7 @@ export class RoomComponent implements OnInit {
   currentRoute: any;
   createRoom: boolean = false;
   showTable: boolean = false;
-  constructor(private route: ActivatedRoute,private router: Router) { }
+  constructor(private route: ActivatedRoute, private router: Router, private service: RoomService) { }
 
   ngOnInit(): void {
     this.route.url.subscribe(data =>
@@ -22,7 +24,7 @@ export class RoomComponent implements OnInit {
       this.createRoom = true;
     else
       this.createRoom = false;
-    console.log(this.currentRoute," ",this.createRoom);
+    console.log(this.currentRoute, " ", this.createRoom);
   }
 
   bufferdata: any = [{
@@ -31,17 +33,17 @@ export class RoomComponent implements OnInit {
     "longitude": "l2"
   },
   {
-    "userId": "5",
+    "userId": "Test",
     "Distance": "23",
     "location": "l2"
   },
   {
-    "userId": "u4",
+    "userId": "dummy",
     "Distance": "08",
     "location": "l2"
   },
   {
-    "userId": "u3",
+    "userId": "TestValue",
     "Distance": "87",
     "location": "l2"
   }
@@ -56,8 +58,14 @@ export class RoomComponent implements OnInit {
     //await this.delay(3000);
     this.showTable = !this.showTable;
   }
-
+ 
+  createNewRoom(data:any) {
+    this.service.createRoom(data.roomId, data.password).subscribe
+      (data =>
+        console.log(data))
+  }
+  
   goBack(): void {
-    this.router.navigate(['back']); 
+    this.router.navigate(['back']);
   }
 }
