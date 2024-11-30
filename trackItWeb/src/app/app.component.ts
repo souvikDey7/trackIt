@@ -9,21 +9,14 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 export class AppComponent {
   title = 'Track It';
   flag: boolean = false;
-
+  login = true;
   constructor(private router: Router) {
-    this.flag = false;
+    this.login = true;
   }
 
-  ngOnInit(): void {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        if (event.url === '/joinroom' || event.url === '/createroom' || event.url==="/back") {
-          this.flag = true;
-        }
-      }
-    });
-  }
+  ngOnInit(): void { }
 
+  msg: any;
   createRoom() {
     this.router.navigate(['createroom']);
   }
@@ -32,7 +25,7 @@ export class AppComponent {
     this.router.navigate(['joinroom']);
   }
 
-  hide() {
-    this.flag = true;
+  loginPage() {
+    this.login = !this.login;
   }
 }
