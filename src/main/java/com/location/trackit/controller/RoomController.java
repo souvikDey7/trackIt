@@ -20,7 +20,7 @@ import com.location.trackit.security.JwtUtils;
 import com.location.trackit.service.RoomService;
 
 @RestController
-@CrossOrigin(origins = "*", methods = { RequestMethod.POST, RequestMethod.OPTIONS })
+@CrossOrigin(origins = "*", methods = { RequestMethod.POST, RequestMethod.GET, RequestMethod.OPTIONS })
 public class RoomController {
 
 	@Autowired

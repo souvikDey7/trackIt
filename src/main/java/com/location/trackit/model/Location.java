@@ -21,7 +21,6 @@ import lombok.Setter;
 public class Location {
 
 	@Id
-	@JsonProperty(value = "userId")
 	// @GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private String userId;
 

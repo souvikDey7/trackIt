@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoomService } from '../app-service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-room',
@@ -25,30 +26,9 @@ export class RoomComponent implements OnInit {
       this.createRoom = true;
     else
       this.createRoom = false;
-    console.log(this.currentRoute, " ", this.createRoom);
   }
 
-  bufferdata: any = [{
-    "userId": "souvik",
-    "latitude": "l1",
-    "longitude": "l2"
-  },
-  {
-    "userId": "Test",
-    "Distance": "23",
-    "location": "l2"
-  },
-  {
-    "userId": "dummy",
-    "Distance": "08",
-    "location": "l2"
-  },
-  {
-    "userId": "TestValue",
-    "Distance": "87",
-    "location": "l2"
-  }
-  ];
+  bufferdata: any = [];
 
   delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -56,6 +36,7 @@ export class RoomComponent implements OnInit {
 
   msg: any;
   createNewRoom(data: any) {
+  let roomId=data.roomId;
     if (data.roomId === '' || data.roomId == null) {
       this.msg = "Required field"
     }
@@ -68,6 +49,7 @@ export class RoomComponent implements OnInit {
         (data => {
           this.hideLoading();
           if (data == "201") {
+            this.showTableData(roomId);
             this.showTable = !this.showTable;
             this.service.sendLocation();
           }
@@ -88,9 +70,8 @@ export class RoomComponent implements OnInit {
     }
   }
 
-  userId: any = "Test";
-
   joinNewRoom(data: any) {
+    let roomId=data.roomId;
     if (data.roomId === '' || data.roomId == null) {
       this.msg = "Required field"
     }
@@ -103,8 +84,9 @@ export class RoomComponent implements OnInit {
         (data => {
           this.hideLoading();
           if (data == "202") {
-            this.showTable = !this.showTable;
+            this.showTableData(roomId);
             this.service.sendLocation();
+            this.showTable = !this.showTable;
           }
           else if (data == "204") {
             this.msg = "Room id is not available"
@@ -123,7 +105,15 @@ export class RoomComponent implements OnInit {
     }
   }
 
+  showTableData(roomId:String): void {
+    this.service.getTable(roomId).subscribe((data) => {
+          this.bufferdata=JSON.parse(data.toString()); 
+          console.log(this.bufferdata);
+    });
+  }
+
   goBack(): void {
+    this.msg = "";
     this.router.navigate(['back']);
   }
 
@@ -131,7 +121,7 @@ export class RoomComponent implements OnInit {
   async showLoading() {
     this.loading = true;
     await this.delay(7000);
-    this.msg="High traffic!!! try again"
+    this.msg = "High traffic!!! wait few moment"
     this.hideLoading();
   }
 

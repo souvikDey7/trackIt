@@ -7,6 +7,8 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -16,6 +18,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.location.trackit.model.Location;
 import com.location.trackit.repository.LocationRepository;
+import com.location.trackit.security.JwtUtils;
 
 @Component
 public class LocationWebSocketHandler extends TextWebSocketHandler {
@@ -26,6 +29,9 @@ public class LocationWebSocketHandler extends TextWebSocketHandler {
 	private ApplicationContext applicationContext;
 
 	private LocationRepository locationRepo;
+
+	@Autowired
+	private JwtUtils jwt;
 
 	@PostConstruct
 	public void init() {
@@ -40,15 +46,17 @@ public class LocationWebSocketHandler extends TextWebSocketHandler {
 	@Override
 	public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
 		// Broadcast the location update to all connected sessions
-
 		ObjectMapper mapper = new ObjectMapper();
 		Location location = mapper.readValue(message.getPayload(), Location.class);
-		upsertLocation(location);
-		/*
-		 * for (WebSocketSession webSocketSession : sessions) { if
-		 * (webSocketSession.isOpen()) { webSocketSession.sendMessage(message); } }
-		 */
-
+		if (location.getUserId() != null) {
+			String userId = jwt.extractUsername(location.getUserId());
+			if (!jwt.validateToken(location.getUserId())) {
+				sessions.remove(session);
+				return;
+			}
+			location.setUserId(userId);
+			upsertLocation(location);
+		}
 	}
 
 	private void upsertLocation(Location newLocation) {

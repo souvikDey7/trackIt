@@ -16,10 +16,12 @@ export class RoomService {
     createRoom(roomId: string, password: string) {
         let finalUrl = this.url + "/createRoom";
         let header = new HttpHeaders();
+        let token = this.session.getKey("Token-key");
         header = header.set('Content-Type', 'application/json; charset=UTF-8 ')
         header = header.set('Access-Control-Allow-Origin', '*');
         header = header.set('Access-Control-Allow-Methods', 'POST,OPTIONS');
         header = header.set('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin, Content-Type, Accept, Accept-Language, Origin, User-Agent');
+        header = header.set('Token-key', (token === null) ? '' : token)
         let credential = {
             "roomId": roomId,
             'password': password
@@ -62,7 +64,9 @@ export class RoomService {
     }
 
     sendLocation() {
-        this.webSocketService.connect('wss://trackit-lkhm.onrender.com/locationupdates');
+        let userId = this.session.getKey("Token-key");
+        this.webSocketService.connect('wss://trackit-lkhm.onrender.com/locationupdates', userId);
+        //this.webSocketService.connect('ws://localhost:8080/locationupdates',userId);
     }
 
     signin(userId: string, password: string) {
@@ -111,12 +115,28 @@ export class RoomService {
             map((response) => {
                 console.log(response);
                 const token = response.body ? response.body : '';
-                this.session.setKey("Token-key",token);
+                this.session.setKey("Token-key", token);
                 return response.status;
             }),
             catchError((error) => {
                 return of(error.status); // Return the error's status code
             })
         );
+    }
+
+    getTable(roomId: String) {
+        let finalUrl = this.url + "/getRoom?roomId=" + roomId;
+        let header = new HttpHeaders();
+        let token = this.session.getKey("Token-key");
+        header = header.set('Content-Type', 'application/json; charset=UTF-8 ')
+        header = header.set('Access-Control-Allow-Origin', '*');
+        header = header.set('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+        header = header.set('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin, Content-Type, Accept, Accept-Language, Origin, User-Agent');
+        header = header.set('Token-key', (token === null) ? '' : token)
+
+        return this.https.get(finalUrl, {
+            headers: header,
+            responseType: 'text' as 'json'
+        })
     }
 }

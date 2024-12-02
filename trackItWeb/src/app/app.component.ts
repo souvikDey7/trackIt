@@ -113,8 +113,8 @@ export class AppComponent {
   loading: boolean = false;
   async showLoading() {
     this.loading = true;
-    await this.delay(7000);
-    this.msg="High traffic!!! try again"
+    await this.delay(10000);
+this.msg = "High traffic!!! wait few moment"
     this.hideLoading();
   }
 
