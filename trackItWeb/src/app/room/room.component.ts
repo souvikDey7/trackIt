@@ -130,8 +130,9 @@ export class RoomComponent implements OnInit {
   loading: boolean = false;
   async showLoading() {
     this.loading = true;
-    await this.delay(3000);
-    this.hideLoading;
+    await this.delay(7000);
+    this.msg="High traffic!!! try again"
+    this.hideLoading();
   }
 
   hideLoading() {
