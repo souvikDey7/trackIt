@@ -99,7 +99,7 @@ export class RoomComponent implements OnInit {
     }
     else {
       this.showLoading();
-      this.service.joinRoom(data.roomId, data.password, this.userId).subscribe
+      this.service.joinRoom(data.roomId, data.password).subscribe
         (data => {
           this.hideLoading();
           if (data == "202") {

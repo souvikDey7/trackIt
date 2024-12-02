@@ -50,3 +50,46 @@ padding: 5%;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; 
 }
+
+/* loading screen*/
+/* Overlay styles */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  z-index: 9999; /* Ensure it appears above other elements */
+  align-items: flex-start; /* Align to top */
+  padding-top: 50%; /* Adjust to push spinner downward */
+}
+
+/* Spinner container */
+.loading-spinner {
+  text-align: center;
+  color: white;
+  align-content: flex-start;
+}
+
+/* Spinner animation */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top: 5px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Spinner animation keyframes */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

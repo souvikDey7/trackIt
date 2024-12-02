@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router) {
     this.flag = false;
+    console.log("in login")
   }
 
   ngOnInit(): void {
