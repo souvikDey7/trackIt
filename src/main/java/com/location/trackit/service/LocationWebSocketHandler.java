@@ -44,18 +44,21 @@ public class LocationWebSocketHandler extends TextWebSocketHandler {
 	}
 
 	@Override
-	public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
+	public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		// Broadcast the location update to all connected sessions
 		ObjectMapper mapper = new ObjectMapper();
 		Location location = mapper.readValue(message.getPayload(), Location.class);
 		if (location.getUserId() != null) {
 			String userId = jwt.extractUsername(location.getUserId());
 			if (!jwt.validateToken(location.getUserId())) {
-				sessions.remove(session);
+				this.afterConnectionClosed(session,CloseStatus.NORMAL);
 				return;
 			}
 			location.setUserId(userId);
 			upsertLocation(location);
+		} else {
+			this.afterConnectionClosed(session,CloseStatus.NORMAL);
+			return;
 		}
 	}
 
