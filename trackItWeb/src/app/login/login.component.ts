@@ -29,6 +29,10 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['createroom']);
   }
 
+  logout() {
+    this.router.navigate(['logout']);
+  }
+
   joinRoom() {
     this.router.navigate(['joinroom']);
   }

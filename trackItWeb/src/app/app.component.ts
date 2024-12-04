@@ -10,21 +10,23 @@ import { SeasionStorageService } from './seasion-storage.service';
 })
 export class AppComponent {
   title = 'Track It';
-  flag: boolean = false;
+  wholepage: boolean = false;
   login = true;
   constructor(private router: Router, private service: RoomService,private session: SeasionStorageService) {
     this.login = true;
-    this.flag = false;
+    this.wholepage = false;
   }
 
   ngOnInit(): void {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         if (event.url === '/joinroom' || event.url === '/createroom' || event.url === '/start' || event.url === "/back") {
-          this.flag = true;
+          this.wholepage = true;
         }
         else{
           this.session.logout();
+          this.wholepage = true;
+
         }
       }
     });
@@ -46,7 +48,7 @@ export class AppComponent {
           this.hideLoading();
           console.log("data",data);
           if (data == "200") {
-            this.flag = true;
+            this.wholepage = true;
             this.router.navigate(['start']);
           }
           else if (data == "302") {
@@ -81,7 +83,7 @@ export class AppComponent {
             
           this.hideLoading();
           if (data == "200") {
-            this.flag = true;
+            this.wholepage = true;
             this.router.navigate(['start']);
           }
           else if (data == "204") {

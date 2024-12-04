@@ -179,6 +179,7 @@ export class RoomComponent implements OnInit {
   hideLoading() {
     this.loading = false;
   }
+  
   openInMap(latitude: any,longitude:any) {
     this.service.openInMap(latitude, longitude);
   }
