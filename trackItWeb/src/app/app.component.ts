@@ -12,7 +12,7 @@ export class AppComponent {
   title = 'Track It';
   wholepage: boolean = false;
   login = true;
-  constructor(private router: Router, private service: RoomService,private session: SeasionStorageService) {
+  constructor(private router: Router, private service: RoomService, private session: SeasionStorageService) {
     this.login = true;
     this.wholepage = false;
   }
@@ -23,10 +23,9 @@ export class AppComponent {
         if (event.url === '/joinroom' || event.url === '/createroom' || event.url === '/start' || event.url === "/back") {
           this.wholepage = true;
         }
-        else{
+        else if (event.url === '/logout') {
           this.session.logout();
           this.wholepage = true;
-
         }
       }
     });
@@ -46,7 +45,7 @@ export class AppComponent {
       this.service.signin(data.userId, data.password).subscribe
         (data => {
           this.hideLoading();
-          console.log("data",data);
+          console.log("data", data);
           if (data == "200") {
             this.wholepage = true;
             this.router.navigate(['start']);
@@ -80,7 +79,7 @@ export class AppComponent {
       this.service.login(data.userId, data.password).subscribe
         (data => {
           console.log(data);
-            
+
           this.hideLoading();
           if (data == "200") {
             this.wholepage = true;
@@ -116,7 +115,7 @@ export class AppComponent {
   async showLoading() {
     this.loading = true;
     await this.delay(10000);
-this.msg = "High traffic!!! wait few moment"
+    this.msg = "High traffic!!! wait few moment"
     this.hideLoading();
   }
 
