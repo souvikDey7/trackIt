@@ -1,9 +1,9 @@
 <div [hidden]="!loading" id="loadingScreen" class="loading-overlay">
     <div class="loading-spinner">
-      <div class="spinner"></div>
-      <p>Loading...</p>
+        <div class="spinner"></div>
+        <p>Loading...</p>
     </div>
-  </div>
+</div>
 <section>
     <!--Join room section-->
     <div [hidden]="showTable==true || createRoom==true">
@@ -106,7 +106,8 @@
                 <tbody>
                     <tr *ngFor="let buffer of bufferdata; let i=index" scope="row">
                         <td><label>{{buffer.userId}}</label></td>
-                        <td><label>{{buffer.Distance}}</label></td>
+                        <td><label>{{calculateDistanceWithGeolib(buffer.latitude,buffer.longitude)}}</label>
+                        </td>
                         <td><label style="color: red; font-size: 1rem"><i class="bi bi-geo-alt"></i></label></td>
                     </tr>
                 </tbody>

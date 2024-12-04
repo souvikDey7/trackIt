@@ -48,16 +48,16 @@ public class LocationWebSocketHandler extends TextWebSocketHandler {
 		// Broadcast the location update to all connected sessions
 		ObjectMapper mapper = new ObjectMapper();
 		Location location = mapper.readValue(message.getPayload(), Location.class);
-		if (location.getUserId() != null) {
+		if (location.getUserId() != null && !location.getUserId().isBlank()) {
 			String userId = jwt.extractUsername(location.getUserId());
 			if (!jwt.validateToken(location.getUserId())) {
-				this.afterConnectionClosed(session,CloseStatus.NORMAL);
+				this.afterConnectionClosed(session, CloseStatus.NORMAL);
 				return;
 			}
 			location.setUserId(userId);
 			upsertLocation(location);
 		} else {
-			this.afterConnectionClosed(session,CloseStatus.NORMAL);
+			this.afterConnectionClosed(session, CloseStatus.NORMAL);
 			return;
 		}
 	}

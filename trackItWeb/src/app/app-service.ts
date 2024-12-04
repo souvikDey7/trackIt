@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, catchError } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { map, catchError, switchMap, shareReplay } from 'rxjs/operators';
+import { of, Observable, Subscription, timer } from 'rxjs';
 import { WebSocketService } from './app.socket.service';
 import { SeasionStorageService } from './seasion-storage.service';
 
@@ -12,7 +12,9 @@ export class RoomService {
 
     constructor(private https: HttpClient, private webSocketService: WebSocketService, private session: SeasionStorageService) { }
 
-    url = "https://trackit-lkhm.onrender.com";
+    //url = "https://trackit-lkhm.onrender.com";
+    url="http://localhost:8080"
+    
     createRoom(roomId: string, password: string) {
         let finalUrl = this.url + "/createRoom";
         let header = new HttpHeaders();
@@ -65,8 +67,8 @@ export class RoomService {
 
     sendLocation() {
         let userId = this.session.getKey("Token-key");
-        this.webSocketService.connect('wss://trackit-lkhm.onrender.com/locationupdates', userId);
-        //this.webSocketService.connect('ws://localhost:8080/locationupdates',userId);
+        //this.webSocketService.connect('wss://trackit-lkhm.onrender.com/locationupdates', userId);
+        this.webSocketService.connect('ws://localhost:8080/locationupdates',userId);
     }
 
     signin(userId: string, password: string) {
@@ -86,8 +88,9 @@ export class RoomService {
             observe: 'response'
         }).pipe(
             map((response) => {
-                console.log(response);
-                this.session.setKey("Token-key", (response === null) ? response : "");
+                const token = response.body ? response.body : '';
+                this.session.setKey("Token-key", token);
+                this.session.setKey("userName", userId);
                 return response.status;
             }),
             catchError((error) => {
@@ -113,9 +116,10 @@ export class RoomService {
             observe: 'response'
         }).pipe(
             map((response) => {
-                console.log(response);
+               // console.log(response);
                 const token = response.body ? response.body : '';
                 this.session.setKey("Token-key", token);
+                this.session.setKey("userName", userId);
                 return response.status;
             }),
             catchError((error) => {
@@ -132,7 +136,7 @@ export class RoomService {
         header = header.set('Access-Control-Allow-Origin', '*');
         header = header.set('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
         header = header.set('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin, Content-Type, Accept, Accept-Language, Origin, User-Agent');
-        header = header.set('Token-key', (token === null) ? '' : token)
+        header = header.set('Token-key', (token === null) ? '' : token);
 
         return this.https.get(finalUrl, {
             headers: header,

@@ -29,7 +29,8 @@ export class WebSocketService {
         this.socket.onopen = () => {
             console.log('WebSocket connection established');
             this.currentReconnectAttempts = 0; // Reset reconnect attempts
-            this.startLocation(userId); // Start keep-alive mechanism
+            this.startLocationTracking(userId);
+            this.keepAlive(userId); // Start keep-alive mechanism
         };
 
         this.socket.onmessage = (event) => {
@@ -51,7 +52,30 @@ export class WebSocketService {
         };
     }
 
-    private startLocation(userId: String): void {
+    private startLocationTracking(userId: String): void {
+        if (navigator.geolocation) {
+            this.watchId = navigator.geolocation.watchPosition(
+                (position) => {
+                    const locationData = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        userId: userId,
+                    };
+                    this.sendMessage(JSON.stringify(locationData));
+                },
+                (error) => {
+                    console.error('Error fetching location:', error);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout:5000,
+                    maximumAge: 0,
+                }
+            );
+        }
+    }
+
+    private keepAlive(userId: String): void {
         this.keepAliveInterval = setInterval(() => {
             // Check if WebSocket is open
             if (this.socket && this.socket.readyState === WebSocket.OPEN) {
@@ -65,7 +89,6 @@ export class WebSocketService {
                                 longitude: position.coords.longitude,
                                 userId: userId
                             };
-                            console.log('Sending location data:', locationData);
                             this.sendMessage(JSON.stringify(locationData));
                         },
                         (error) => {
@@ -73,7 +96,7 @@ export class WebSocketService {
                         },
                         {
                             enableHighAccuracy: false,
-                            timeout: 5000000,
+                            timeout: 500000,
                             maximumAge: 0
                         }
                     );

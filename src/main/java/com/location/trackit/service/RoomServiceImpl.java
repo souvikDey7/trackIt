@@ -30,7 +30,7 @@ public class RoomServiceImpl implements RoomService {
 	private LocationRepository locationRepo;
 
 	@Override
-	public ResponseEntity<String> roomCreation(Room room) {
+	public ResponseEntity<String> roomCreation(Room room,String userId) {
 		try {
 			if (room.getPassword() == null || room.getRoomId() == null)
 				return createResponse(room.getRoomId(), HttpStatus.BAD_REQUEST);
@@ -38,6 +38,7 @@ public class RoomServiceImpl implements RoomService {
 			if (r.isPresent()) {
 				return createResponse("Room name is not available", HttpStatus.CONFLICT);
 			}
+			insertLobby(room.getRoomId(), userId);
 			roomRepo.save(room);
 			return createResponse(room.getRoomId(), HttpStatus.CREATED);
 		} catch (IllegalAccessError e) {

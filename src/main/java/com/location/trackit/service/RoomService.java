@@ -9,7 +9,7 @@ import com.location.trackit.model.Room;
 
 public interface RoomService {
 
-	public ResponseEntity<String> roomCreation(Room room);
+	public ResponseEntity<String> roomCreation(Room room,String userId);
 
 	public ResponseEntity<String> roomJoin(Room room, String userId);
 

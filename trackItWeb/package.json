@@ -2,14 +2,13 @@
   "name": "track-it-web",
   "version": "0.0.0",
   "scripts": {
-  "ng": "npx ng",
-  "start": "npx ng serve",
-  "build": "npx ng build --prod",
-  "test": "npx ng test",
-  "lint": "npx ng lint",
-  "e2e": "npx ng e2e"
-}
-,
+    "ng": "npx ng",
+    "start": "npx ng serve",
+    "build": "npx ng build --prod",
+    "test": "npx ng test",
+    "lint": "npx ng lint",
+    "e2e": "npx ng e2e"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~11.2.12",
@@ -20,6 +19,7 @@
     "@angular/platform-browser": "~11.2.12",
     "@angular/platform-browser-dynamic": "~11.2.12",
     "@angular/router": "~11.2.12",
+    "geolib": "^3.3.4",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"

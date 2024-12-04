@@ -32,17 +32,18 @@ public class RoomController {
 	@PostMapping("/createRoom")
 	public ResponseEntity<String> createRoom(@RequestBody Room room,
 			@RequestHeader(value = "Token-key", required = true) String tokenKey) {
-		if(tokenKey==null)
+		if (tokenKey == null || tokenKey.isBlank())
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		if (!jwt.validateToken(tokenKey))
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		return roomService.roomCreation(room);
+		String userId = jwt.extractUsername(tokenKey);
+		return roomService.roomCreation(room,userId);
 	}
 
 	@PostMapping("/joinRoom")
 	public ResponseEntity<String> joinRoom(@RequestBody Room room,
 			@RequestHeader(value = "Token-key", required = true) String tokenKey) {
-		if(tokenKey==null)
+		if (tokenKey == null || tokenKey.isBlank())
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		if (!jwt.validateToken(tokenKey))
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -53,7 +54,7 @@ public class RoomController {
 	@GetMapping("/getRoom")
 	public ResponseEntity<List<Location>> getLocation(@RequestParam("roomId") String roomId,
 			@RequestHeader(value = "Token-key", required = true) String tokenKey) {
-		if(tokenKey==null)
+		if (tokenKey == null || tokenKey.isBlank())
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		if (!jwt.validateToken(tokenKey))
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
