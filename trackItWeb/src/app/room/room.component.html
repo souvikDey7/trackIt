@@ -108,7 +108,7 @@
                         <td><label>{{buffer.userId}}</label></td>
                         <td><label>{{calculateDistanceWithGeolib(buffer.latitude,buffer.longitude)}}</label>
                         </td>
-                        <td><label style="color: red; font-size: 1rem"><i class="bi bi-geo-alt"></i></label></td>
+                        <td><label style="color: red; font-size: 1rem"><i (click)="openInMap(buffer.latitude,buffer.longitude)" class="bi bi-geo-alt"></i></label></td>
                     </tr>
                 </tbody>
             </table>

@@ -12,8 +12,8 @@ export class RoomService {
 
     constructor(private https: HttpClient, private webSocketService: WebSocketService, private session: SeasionStorageService) { }
 
-    //url = "https://trackit-lkhm.onrender.com";
-    url="http://localhost:8080"
+    url = "https://trackit-lkhm.onrender.com";
+    //url="http://localhost:8080"
     
     createRoom(roomId: string, password: string) {
         let finalUrl = this.url + "/createRoom";
@@ -67,8 +67,8 @@ export class RoomService {
 
     sendLocation() {
         let userId = this.session.getKey("Token-key");
-        //this.webSocketService.connect('wss://trackit-lkhm.onrender.com/locationupdates', userId);
-        this.webSocketService.connect('ws://localhost:8080/locationupdates',userId);
+        this.webSocketService.connect('wss://trackit-lkhm.onrender.com/locationupdates', userId);
+        //this.webSocketService.connect('ws://localhost:8080/locationupdates',userId);
     }
 
     signin(userId: string, password: string) {
@@ -142,5 +142,15 @@ export class RoomService {
             headers: header,
             responseType: 'text' as 'json'
         })
+    }
+
+    openInMap(latitude:any,longitude:any)
+    {
+        const mapsUrl = 'https://www.google.com/maps?q='+latitude+','+longitude;
+        if (navigator.userAgent.match(/iPhone|Android|iPad/i)) {
+            window.location.href = mapsUrl;
+          } else {
+            window.open(mapsUrl, '_blank');
+          }
     }
 }

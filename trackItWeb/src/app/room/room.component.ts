@@ -127,7 +127,7 @@ export class RoomComponent implements OnInit {
 
   startPolling(roomId: string): void {
     if (!this.pollingSubscription) {
-      this.pollingSubscription = timer(0, 30000) // Start immediately, repeat every 30 seconds
+      this.pollingSubscription = timer(0, 60000) // Start immediately, repeat every 660 seconds
         .pipe(
           switchMap(() => this.service.getTable(roomId)) // API call on each interval
         )
@@ -178,5 +178,8 @@ export class RoomComponent implements OnInit {
 
   hideLoading() {
     this.loading = false;
+  }
+  openInMap(latitude: any,longitude:any) {
+    this.service.openInMap(latitude, longitude);
   }
 }
