@@ -25,6 +25,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.csrf().disable().authorizeRequests()
 				.antMatchers("*").permitAll();
 		httpSecurity.headers().frameOptions().disable();
+		httpSecurity.sessionManagement()
+         .maximumSessions(6) // Limit sessions per user
+         .maxSessionsPreventsLogin(true); // Prevents new logins if session limit is reached
 				
 	}
 }

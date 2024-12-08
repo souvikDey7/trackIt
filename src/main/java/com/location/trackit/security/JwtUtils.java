@@ -1,6 +1,5 @@
 package com.location.trackit.security;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -58,9 +57,14 @@ public class JwtUtils {
 				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 	}
 
-	public Boolean validateToken(String token) {
+	public Boolean validateToken1(String token) {
 		final String username = extractUsername(token);
 		return (username.equals(extractUsername(credential)) && !isTokenExpired(token));
+	}
+
+	public Boolean validateTokenWithUserId(String token, String userName) {
+		final String username = extractUsername(token);
+		return (username.equals(extractUsername(userName)) && !isTokenExpired(token));
 	}
 
 }

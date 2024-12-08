@@ -14,16 +14,18 @@ export class RoomService {
 
     url = "https://trackit-lkhm.onrender.com";
     //url="http://localhost:8080"
-    
+
     createRoom(roomId: string, password: string) {
         let finalUrl = this.url + "/createRoom";
         let header = new HttpHeaders();
         let token = this.session.getKey("Token-key");
+        let userId = this.session.getKey("userName");
         header = header.set('Content-Type', 'application/json; charset=UTF-8 ')
         header = header.set('Access-Control-Allow-Origin', '*');
         header = header.set('Access-Control-Allow-Methods', 'POST,OPTIONS');
         header = header.set('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin, Content-Type, Accept, Accept-Language, Origin, User-Agent');
-        header = header.set('Token-key', (token === null) ? '' : token)
+        header = header.set('Token-key', (token === null) ? '' : token);
+        header = header.set('userName', (userId === null) ? '' : userId);
         let credential = {
             "roomId": roomId,
             'password': password
@@ -44,11 +46,13 @@ export class RoomService {
         let finalUrl = this.url + "/joinRoom";
         let header = new HttpHeaders();
         let token = this.session.getKey("Token-key");
+        let userId = this.session.getKey("userName");
         header = header.set('Content-Type', 'application/json; charset=UTF-8 ')
         header = header.set('Access-Control-Allow-Origin', '*');
         header = header.set('Access-Control-Allow-Methods', 'POST,OPTIONS');
         header = header.set('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin, Content-Type, Accept, Accept-Language, Origin, User-Agent');
-        header = header.set('Token-key', (token === null) ? '' : token)
+        header = header.set('Token-key', (token === null) ? '' : token);
+        header = header.set('userName', (userId === null) ? '' : userId);
         let credential = {
             "roomId": roomId,
             'password': password
@@ -116,7 +120,7 @@ export class RoomService {
             observe: 'response'
         }).pipe(
             map((response) => {
-               // console.log(response);
+                // console.log(response);
                 const token = response.body ? response.body : '';
                 this.session.setKey("Token-key", token);
                 this.session.setKey("userName", userId);
@@ -132,25 +136,25 @@ export class RoomService {
         let finalUrl = this.url + "/getRoom?roomId=" + roomId;
         let header = new HttpHeaders();
         let token = this.session.getKey("Token-key");
+        let userId = this.session.getKey("userName");
         header = header.set('Content-Type', 'application/json; charset=UTF-8 ')
         header = header.set('Access-Control-Allow-Origin', '*');
         header = header.set('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
         header = header.set('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin, Content-Type, Accept, Accept-Language, Origin, User-Agent');
         header = header.set('Token-key', (token === null) ? '' : token);
-
+        header = header.set('userName', (userId === null) ? '' : userId);
         return this.https.get(finalUrl, {
             headers: header,
             responseType: 'text' as 'json'
         })
     }
 
-    openInMap(latitude:any,longitude:any)
-    {
-        const mapsUrl = 'https://www.google.com/maps?q='+latitude+','+longitude;
+    openInMap(latitude: any, longitude: any) {
+        const mapsUrl = 'https://www.google.com/maps?q=' + latitude + ',' + longitude;
         if (navigator.userAgent.match(/iPhone|Android|iPad/i)) {
             window.location.href = mapsUrl;
-          } else {
+        } else {
             window.open(mapsUrl, '_blank');
-          }
+        }
     }
 }
