@@ -12,9 +12,12 @@ export class AppComponent {
   title = 'Track It';
   wholepage: boolean = false;
   login = true;
+  start: boolean = true;
+
   constructor(private router: Router, private service: RoomService, private session: SeasionStorageService) {
     this.login = true;
     this.wholepage = false;
+    this.start = true;
   }
 
   ngOnInit(): void {
@@ -22,10 +25,12 @@ export class AppComponent {
       if (event instanceof NavigationEnd) {
         if (event.url === '/joinroom' || event.url === '/createroom' || event.url === '/start' || event.url === "/back") {
           this.wholepage = true;
+          this.start = false;
         }
         else if (event.url === '/logout') {
           this.session.logout();
           this.wholepage = true;
+          this.start = true;
         }
       }
     });
@@ -121,5 +126,9 @@ export class AppComponent {
 
   hideLoading() {
     this.loading = false;
+  }
+
+  startPopup() {
+    this.start = false;
   }
 }

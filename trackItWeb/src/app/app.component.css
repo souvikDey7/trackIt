@@ -93,3 +93,35 @@ padding: 5%;
     transform: rotate(360deg);
   }
 }
+
+
+.start-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  background-color: rgb(255, 255, 255); /* Semi-transparent background */
+  display: flex;
+  justify-content: flex-start;
+  z-index: 9999; /* Ensure it appears above other elements */
+  align-items: flex-start; /* Align to top */
+  padding-top: 50%; /* Adjust to push spinner downward */
+  background-image:image("assets\CloseCircle.png");
+}
+
+.start
+{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.startbt:hover {
+  background-color: rgb(15, 11, 211);
+}
