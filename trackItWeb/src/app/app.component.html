@@ -1,7 +1,8 @@
+<div *ngIf="isMobile; else desktopWarning">
+
 <div class="start-overlay" [hidden]="!start">
-    <div class="start"
-        style="background-image: url('assets/CloseCircle.png');background-repeat: no-repeat; width: 100%;">
-        <p style="grid-area: 2/2/2/5; text-align: center; font-family: Helvetica; font-size: small;"
+    <div class="start" style="background-image: url('assets/CloseCircle.png');background-repeat: repeat; width: 100%;">
+        <p style="grid-area: 2/2/2/5; text-align: center; font-family: Helvetica; font-size: small; text-shadow: 1px 1px white;"
             class="font-weight-bold blockquote">
             <b> Join your friends effortlessly and never ask ,"Where are you?" again! With CloseCircle, you can create
                 or
@@ -173,3 +174,11 @@
 </div>
 
 <router-outlet></router-outlet>
+
+</div>
+<ng-template #desktopWarning>
+    <!-- Warning for desktop users -->
+    <h1 style="color: red; text-align: center; padding: 20px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
+      This site is designed for mobile devices. Please visit on a mobile device.
+    </h1>
+</ng-template>

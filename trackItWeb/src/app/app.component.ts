@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { RoomService } from './app-service';
 import { SeasionStorageService } from './seasion-storage.service';
@@ -13,6 +13,7 @@ export class AppComponent {
   wholepage: boolean = false;
   login = true;
   start: boolean = true;
+  isMobile = false;
 
   constructor(private router: Router, private service: RoomService, private session: SeasionStorageService) {
     this.login = true;
@@ -21,6 +22,7 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
+    this.checkDevice();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         if (event.url === '/joinroom' || event.url === '/createroom' || event.url === '/start' || event.url === "/back") {
@@ -34,6 +36,16 @@ export class AppComponent {
         }
       }
     });
+  }
+
+
+  @HostListener('window:resize', [])
+  onResize() {
+    this.checkDevice();
+  }
+
+  private checkDevice() {
+    this.isMobile = window.innerWidth <= 768; // Set your threshold for mobile
   }
 
   msg: any;
